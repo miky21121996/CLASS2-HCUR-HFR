@@ -21,3 +21,5 @@ OUTPUT VARIABLES:
 a. work_dir: path to working directory
 b. path_to_destag_model_files: path to the folder where you want the destaggered files provided by the tool
 c. output_plot_folder: path to the folder where you want to have the plots
+
+2. run sh main_validation.sh
