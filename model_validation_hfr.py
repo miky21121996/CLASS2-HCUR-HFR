@@ -406,10 +406,10 @@ class MarkerHandler(HandlerBase):
         return [plt.Line2D([width/2], [height/2.],ls="",
                        marker=tup,color='blue', transform=trans)]
 
-def mscatter(x,y,cmap,ax=None, m=None, **kw):
+def mscatter(x,y,ax=None, m=None, **kw):
     import matplotlib.markers as mmarkers
     ax = ax or plt.gca()
-    sc = ax.scatter(x,y,clip_on=False,cmap=cmap,**kw)
+    sc = ax.scatter(x,y,clip_on=False,cmap='plasma',**kw)
     if (m is not None) and (len(m)==len(x)):
         paths = []
         for marker in m:
@@ -439,7 +439,7 @@ def scatterPlot(mod, obs, outname, name, n_stations, n_time, possible_markers, h
         m=np.repeat(possible_markers,n_time)
     if n_stations>1:
         m=np.repeat(possible_markers[:n_stations],n_time)
-    c = np.tile(np.arange(n_time),n_stations)
+    c_prova = np.tile(np.arange(0,6*n_time,6),n_stations)
 #    z = gaussian_kde(xy)(xy)
 #    idx = z.argsort()
 
@@ -456,7 +456,8 @@ def scatterPlot(mod, obs, outname, name, n_stations, n_time, possible_markers, h
     markers_labels = hfr_name
     fig, ax = plt.subplots(figsize=(10,6))
 #    im = ax.scatter(x, y, c=z, s=8, edgecolor=None, cmap='jet', clip_on=False)
-    im = mscatter(x, y, ListedColormap(color_list_seq), ax=ax, m=m, c=c, s=15)
+    #im = mscatter(x, y, cmap_prova(c_prova), ax=ax, m=m, c=c_prova,s=15)
+    im = mscatter(x, y, ax=ax, m=m, c=c_prova,s=15)
     marker_array=[]
     if n_stations==1:
         marker_array.append(mlines.Line2D([], [], color='blue', marker=possible_markers, linestyle='None', markersize=5, label=markers_labels))
@@ -465,7 +466,7 @@ def scatterPlot(mod, obs, outname, name, n_stations, n_time, possible_markers, h
             print('label: ',mark_label)
             marker_array.append(mlines.Line2D([], [], color='blue', marker=mark, linestyle='None', markersize=5, label=mark_label))
 
-    legend_1=plt.legend(handles=im.legend_elements()[0], labels=classes, loc='right',prop={"size":12},bbox_to_anchor=(1.3, 0.5))
+    legend_1=plt.legend(handles=im.legend_elements(num=n_time)[0], labels=classes, loc='right',prop={"size":9},bbox_to_anchor=(1.3, 0.5))
     plt.legend(handles=marker_array,loc='upper left',prop={"size":12})
     plt.gca().add_artist(legend_1)
     #plt.legend(list(tuple(possible_markers[:n_stations])), markers_labels,handler_map={tuple:MarkerHandler()},loc='upper left') 
@@ -614,7 +615,10 @@ if __name__ == "__main__":
 
     start_date = date(int(ini_date[0:4]),int(ini_date[4:6]) , int(ini_date[6:8]))
     end_date = date(int(fin_date[0:4]),int(fin_date[4:6]) , int(fin_date[6:8]))
-    timerange = pd.date_range(start_date, end_date, freq=time_res_to_average[1]) - pd.DateOffset(days=15)
+    if time_res_to_average[1]=='M':
+        timerange = pd.date_range(start_date, end_date, freq=time_res_to_average[1]) - pd.DateOffset(days=15)
+    if time_res_to_average[1]=='D':
+        timerange = pd.date_range(start_date, end_date, freq=time_res_to_average[1]) - pd.DateOffset(hours=12)
     mesh_mask = xarray.open_dataset(path_to_mesh_mask)
     u_mask = mesh_mask.umask.values
     v_mask = mesh_mask.vmask.values
@@ -785,7 +789,7 @@ if __name__ == "__main__":
             sol_speed_hfr = seaoverland(masked_speed_hfr,3)
             sol_u_hfr=seaoverland(masked_U,3)
             sol_v_hfr=seaoverland(masked_V,3)
-            threshold=0.5
+            threshold=0.7
             step_lon=lon_hfr[1]-lon_hfr[0]
             step_lat=lat_hfr[1]-lat_hfr[0]
             X=np.concatenate(([lon_hfr[0]-step_lon], lon_hfr, [lon_hfr[-1]+step_lon]))
