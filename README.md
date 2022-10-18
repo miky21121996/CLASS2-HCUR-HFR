@@ -12,7 +12,7 @@ INPUT VARIABLES:
   d. path_to_mesh_mask: path to .nc mesh mask file  
   e. time_res_to_average: time resolution you want the tool use to average the current velocities data (es: 1M, monthly resolution)  
   f. path_to_model_files: path to .nc model files  
-  g. want_destag: if yes the tool executes destaggering on model files, if no the tool skips destaggering (because you already have destaggered velocity .nc files)  
+  g. want_destag: if yes the tool executes destaggering on model files, if no the tool skips destaggering (because you already have destaggered velocity .nc files for example and want just to run the plot part)  
   h. time_res_model: time resolution of nc model files (es: 1h)  
   i. name_exp: name of the experiment in model file names. If the model files of the experiment change name over time, write all the names separated by comma (es:   name_exp=mfs1,mfs2)  
 
