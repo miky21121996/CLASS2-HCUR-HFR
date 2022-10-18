@@ -6,7 +6,7 @@ This tool provides statistics from comparison between model data and High Freque
 
 INPUT VARIABLES:
 
-a. ini_date: initial date (es: 20201231)
+a. ini_date: initial date
 b. fin_date: final date
 c. path_to_hfr_files: path to .nc HFR files
 d. path_to_mesh_mask: path to .nc mesh mask file
