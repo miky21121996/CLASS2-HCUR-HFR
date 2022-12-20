@@ -1,10 +1,37 @@
 # HFR-HCURR
+This tool provides statistics comparing model data and high frequency radars current velocities.
 
-This tool provides statistics from comparison between model data and High Frequency radars current velocities. It is necessary to have a python virtual environment with the following packages: sys, warnings, netCDF4, datetime, collections, os, csv, numpy, xarray, pandas, scipy, matplotlib, cartopy.
+## Table of Contents
+* [Setup](#setup)
+* [Usage](#usage)
+* [Project Status](#project-status)
+* [Room for Improvement](#room-for-improvement)
+* [Acknowledgements](#acknowledgements)
+* [Contact](#contact)
+<!-- * [License](#license) -->
 
-1. Open validation_hfr.ini
+## Setup
+It is necessary to have a python virtual environment with the following packages:  
+* sys  
+* warnings  
+* netCDF4  
+* datetime  
+* collections  
+* os  
+* csv  
+* numpy  
+* xarray (version 0.20.1)
+* pandas  
+* scipy  
+* matplotlib  
+* cartopy  
 
-INPUT VARIABLES:
+To clone the repository: git clone git@github.com:miky21121996/CLASS2-HCUR-HFR.git name_your_repo
+
+## Usage
+1. Open *validation_hfr.ini*
+
+**INPUT VARIABLES**:
 
   a. ini_date: initial date  
   b. fin_date: final date  
