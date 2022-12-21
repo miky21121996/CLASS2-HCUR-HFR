@@ -6,10 +6,8 @@ This tool provides statistics comparing model data and high frequency radars cur
 * [Setup](#setup)
 * [Usage](#usage)
 * [Project Status](#project-status)
-* [Room for Improvement](#room-for-improvement)
-* [Acknowledgements](#acknowledgements)
 * [Contact](#contact)
-<!-- * [License](#license) -->
+
 ## General Info
 The tool can manage the comparison of multiple experiments (with regular and irregular grid) with the same observation dataset.
 
@@ -71,3 +69,9 @@ Note:
 * output_plot_folder_comparison: path to the folder where you want to have the plots that directly compare the various experiments (num_exp must be larger than 1)
 
 2. run sh main_validation.sh &
+
+## Project Status
+Project is: _in progress_ 
+
+## Contact
+Created by Michele Giurato (michele.giurato@cmcc.it) - feel free to contact me!
