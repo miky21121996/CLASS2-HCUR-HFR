@@ -29,8 +29,8 @@ It is necessary to have a python virtual environment with the following packages
 
 To clone the repository: git clone git@github.com:miky21121996/CLASS2-HCUR-HFR.git name_your_repo
 
-## Usage
-1. If the model files of the experiment change name over time, you can use *link_model_files.sh* because the tool needs to have an unique name for each experiment: sh link_model_files.sh component name_exp time_res_model path_to_model_files ini_date fin_date out_model  
+If the model files of the experiment change name over time, you can use *link_model_files.sh* because the tool needs to have an unique name for each experiment:  
+*sh link_model_files.sh component name_exp time_res_model path_to_model_files ini_date fin_date out_model*  
 Where:  
 * component: U or V
 * old_name_exp: name of the exp you want to change to uniform all the model file names of the experiment  
@@ -44,7 +44,42 @@ Note:
 * it is important to have in the out_model folder the model files for the entire period of interest.  
 * It is likely you need to change the code in *link_model_files.sh* to adapt it to the original path you want to rename linking it. The final linked path must have this format: out_model/name_exp_${time_res_model}_$(date -d "$current" +%Y%m%d)_grid_${component}.nc
 
-2. Open *validation_hfr.ini*
+If your mesh mask lat and lon variables' names are "x" and "y", as the dimension names, it is necessary to rename them in "nav_lon" (depending on dimensions x and y) and "nav_lat" (depending on dimensions x and y). You can use *mesh_mask_and_coord_file.py*:  
+*python mesh_mask_and_coord_file.py path_to_original_mesh_mask coordinates_file path_to_output_folder name_exp*  
+Where:  
+* path_to_original_mesh_mask: path to the mesh mask file from which you want to create the new renamed mesh mask file
+* coordinates_file: if the model has an irregular grid you will need a coordinates.nc file to create an angles.nc file, necessary to execute the interpolation from the model irregular grid to the HF radar regular grid. If "no" the run will provide just the renamed mesh mask file. If "yes" the run will provide the renamed mesh mask file and the coordinates file
+* path_to_output_folder: path to folder where you want new mesh mask and coordinates file to be saved
+* name_exp: name you want your new mesh mask and coordinates file to have as prefix (es: name_exp_mesh_mask_to_save.nc and name_exp_coordinates.nc)
+
+If the model has an irregular grid, you can use *provide_angles.F90*:  
+*gfortran -o provide_angles.x provide_angles.F90 -I/zeus/opt/impi19.5/netcdf/C_4.7.2-F_4.5.2_CXX_4.3.1/include -L/zeus/opt/impi19.5/netcdf/C_4.7.2-F_4.5.2_CXX_4.3.1/lib -lnetcdff -lnetcdf*
+*./provide_angles.x*  
+
+In *provide_angles.F90* you must have:  
+*  CHARACTER(LEN=16), PARAMETER :: conf = 'name_exp' (name_exp is the same of the prefix of coordinates.nc)  
+*   INTEGER, PARAMETER :: jpiglo = number of x points and INTEGER, PARAMETER :: jpjglo = number of y points (you can check them in mesh mask or coordinates file dimensions)
+
+The run will provide a name_exp_angle.nc file that you need to include in *zapata.py*.
+In *def _resolve_grid(self, ingrid, grid,verbose=False):* you must add something like this:  
+if ingrid == 'name_exp':  
+    print(f' Tripolar 1/128 Grid -- {ingrid}')  
+    grid = xr.open_dataset(self.mdir + 'name_exp_coordinates.nc')  
+    angle = xr.open_dataset(self.mdir + '/name_exp_angle.nc')  
+    struct={'tmask': grid.tmask, 'umask': grid.umask,'vmask': grid.vmask, 'tangle': angle.tangle, \  
+            'lonT': grid.glamt,'latT':grid.gphit,'lonU':grid.glamu, \  
+            'latU':grid.gphiu,'lonV':grid.glamv,'latV':grid.gphiv  }  
+  
+For what concerns the HF radar nc files, in *def _resolve_grid(self, ingrid, grid,verbose=False):* you need to include for each of them something like this:  
+elif ingrid == 'GL_TV_HF_HFR-Ibiza-Total':  
+    print(f' Regular HFR Lat-Lon Grid -- {ingrid}')  
+    tk=np.logical_not(grid['mask'])  
+    mask = tk.assign_coords({'lat':grid.nav_lat,'lon':grid.nav_lon})  
+    struct={'mask': mask}  
+
+## Usage
+
+Open *validation_hfr.ini*
 
 **INPUT VARIABLES**:
 
