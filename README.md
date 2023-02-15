@@ -30,7 +30,7 @@ It is necessary to have a python virtual environment with the following packages
 To clone the repository: git clone git@github.com:miky21121996/CLASS2-HCUR-HFR.git name_your_repo
 
 If the model files of the experiment change name over time, you can use *link_model_files.sh* because the tool needs to have an unique name for each experiment:  
-*sh link_model_files.sh component name_exp time_res_model path_to_model_files ini_date fin_date out_model*  
+*sh link_model_files.sh component old_name_exp new_name_exp time_res_model path_to_model_files ini_date fin_date out_model*  
 Where:  
 * component: U or V
 * old_name_exp: name of the exp you want to change to uniform all the model file names of the experiment  
