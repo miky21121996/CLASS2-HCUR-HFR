@@ -79,7 +79,7 @@ elif ingrid == 'GL_TV_HF_HFR-Ibiza-Total':
 
 ## Usage
 
-Open *validation_hfr.ini*
+1. Open *validation_hfr.ini*
 
 **INPUT VARIABLES**:
 
