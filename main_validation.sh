@@ -36,8 +36,10 @@ do
 #        if [ "${want_link_array[$i]}" = "yes" ] ; then
 #            sh link_model_files.sh U ${name_exp_array[$i]} ${name_exp_array[$i]} ${time_res_model_array[$i]} ${model_array[$i]} ${ini_date} ${fin_date} ${out_model_array[$i]}
 #            sh link_model_files.sh V ${name_exp_array[$i]} ${name_exp_array[$i]} ${time_res_model_array[$i]} ${model_array[$i]} ${ini_date} ${fin_date} ${out_model_array[$i]}
-#            ncrcat ${out_model_array[$i]}/${name_exp_array[$i]}_${time_res_model_array[$i]}*_grid_U.nc ${out_model_array[$i]}/${name_exp_array[$i]}_${time_res_model_array[$i]}_grid_U_combined.nc
-#            ncrcat ${out_model_array[$i]}/${name_exp_array[$i]}_${time_res_model_array[$i]}*_grid_V.nc ${out_model_array[$i]}/${name_exp_array[$i]}_${time_res_model_array[$i]}_grid_V_combined.nc
+        ncrcat ${out_model_array[$i]}/${name_exp_array[$i]}_${time_res_model_array[$i]}*_grid_U.nc ${out_model_array[$i]}/${name_exp_array[$i]}_${time_res_model_array[$i]}_grid_U_combined.nc
+        wait
+        ncrcat ${out_model_array[$i]}/${name_exp_array[$i]}_${time_res_model_array[$i]}*_grid_V.nc ${out_model_array[$i]}/${name_exp_array[$i]}_${time_res_model_array[$i]}_grid_V_combined.nc
+        wait
 #        fi
         u_combined_array[$i]=${out_model_array[$i]}/${name_exp_array[$i]}_${time_res_model_array[$i]}_grid_U_combined.nc
         v_combined_array[$i]=${out_model_array[$i]}/${name_exp_array[$i]}_${time_res_model_array[$i]}_grid_V_combined.nc

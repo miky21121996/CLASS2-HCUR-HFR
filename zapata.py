@@ -237,6 +237,7 @@ class Ocean_Interpolator():
 
         if s_in['umask'] is not None:
            tk = s_in['umask']
+           print("s_in umask shape: ",tk.shape)
            self.U_lon = s_in['lonU']
            self.U_lat = s_in['latU']
            masku = tk.assign_coords({'lat':self.U_lat,'lon':self.U_lon}) #.drop_vars(['U_lon','U_lat','V_lon','V_lat','T_lon','T_lat']).rename({'z':'deptht'})
@@ -408,6 +409,8 @@ class Ocean_Interpolator():
         # Compute interpolation for U,V
         Ustack = udata.stack(ind=('y','x'))
         Vstack = vdata.stack(ind=('y','x'))
+        print(udata.shape)
+        print(self.masku.shape)
         sea_U = Ustack[self.sea_index_U]
         sea_V = Vstack[self.sea_index_V]
 
@@ -534,13 +537,13 @@ class Ocean_Interpolator():
                     'latU':grid.gphiu,'lonV':grid.glamv,'latV':grid.gphiv  }
         if ingrid == '1_AGRIF':
             print(f' Tripolar 1/128 Grid -- {ingrid}')
-            grid = xr.open_dataset(self.mdir + '1_BIZoo_coordinates.nc')
+            grid_model = xr.open_dataset(self.mdir + '1_BIZoo_coordinates.nc')
             #grid = grid.sel(z=level)
             #geo = xr.open_dataset(self.mdir + '/L75_025_TRP_GLO/NEMO_coordinates.nc')
             angle = xr.open_dataset(self.mdir + '/1_BIZoo_angle.nc')
-            struct={'tmask': grid.tmask, 'umask': grid.umask,'vmask': grid.vmask, 'tangle': angle.tangle, \
-                    'lonT': grid.glamt,'latT':grid.gphit,'lonU':grid.glamu, \
-                    'latU':grid.gphiu,'lonV':grid.glamv,'latV':grid.gphiv  }
+            struct={'tmask': grid_model.tmask, 'umask': grid_model.umask,'vmask': grid_model.vmask, 'tangle': angle.tangle, \
+                    'lonT': grid_model.glamt,'latT':grid_model.gphit,'lonU':grid_model.glamu, \
+                    'latU':grid_model.gphiu,'lonV':grid_model.glamv,'latV':grid_model.gphiv  }
 
         elif ingrid == 'GL_TV_HF_HFR-Gibraltar-Total':
             print(f' Regular HFR Lat-Lon Grid -- {ingrid}')
